@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<!-- Required libraries -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.24/webcam.js"></script>
+	<!-- Bootstrap theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<title>Capture Image from Webcam</title>
+	<style>
+		body {
+			background-color: #f0f0f0;
+			font-family: Arial, sans-serif;
+		}
+
+		.container {
+			margin-top: 40px;
+		}
+
+		.frame {
+			background-color: #fff;
+			box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+			border-radius: 8px;
+			padding: 20px;
+			margin-bottom: 20px;
+			text-align: center;
+		}
+
+		.result-image {
+			max-width: 100%;
+			height: auto;
+			border-radius: 8px;
+		}
+
+		.btn-capture {
+			background-color: #3ca9d6;
+			color: #fff;
+			border: none;
+			padding: 10px 20px;
+			border-radius: 5px;
+			cursor: pointer;
+			transition: background-color 0.3s;
+		}
+
+		.btn-capture:hover {
+			background-color: #2381a3;
+		}
+
+		.btn-save {
+			background-color: #68c495;
+			color: #fff;
+			border: none;
+			padding: 10px 20px;
+			border-radius: 5px;
+			cursor: pointer;
+			transition: background-color 0.3s;
+		}
+
+		.btn-save:hover {
+			background-color: #4e9f74;
+		}
+
+		.footer {
+			margin-top: 20px;
+			color: #777;
+		}
+
+		.footer a {
+			color: #555;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-6" align="center">
+				<div class="frame">
+					<h2>Preview</h2>
+					<div id="my_camera"></div>
+					<input type="hidden" name="captured_image_data" id="captured_image_data">
+					<br>
+					<button class="btn btn-capture" onclick="takeSnapshot()">Take a photo!</button>
+				</div>
+			</div>
+			<div class="col-lg-6" align="center">
+				<div class="frame">
+					<h2>Preview result</h2>
+					<div id="results">
+						<img class="result-image" src="image_placeholder.jpg" alt="Captured Image">
+					</div>
+					<br>
+					<button class="btn btn-save" onclick="savePicture()">Save image</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		Webcam.set({
+			width: 350,
+			height: 287,
+			image_format: 'jpeg',
+			jpeg_quality: 90
+		});
+
+		Webcam.attach('#my_camera');
+
+		function takeSnapshot() {
+			Webcam.snap(function (data_uri) {
+				document.getElementById('results').innerHTML = `<img class="result-image" src="${data_uri}" alt="Captured Image">`;
+				$("#captured_image_data").val(data_uri);
+			});
+		}
+
+		function savePicture() {
+			var base64data = $("#captured_image_data").val();
+			$.ajax({
+				type: "POST",
+				dataType: "json",
+				url: "upload_photo.php",
+				data: { image: base64data },
+				success: function (data) {
+					alert(data);
+				}
+			});
+		}
+	</script>
+</body>
+
+</html>
+
+<script>
+	Webcam.set({
+		width: 350,
+		height: 287,
+		image_format: 'jpeg',
+		jpeg_quality: 90
+	});
+
+	Webcam.attach('#my_camera');
+
+	function takeSnapshot() {
+		Webcam.snap(function (data_uri) {
+			document.getElementById('results').innerHTML = `<img class="result-image" src="${data_uri}" alt="Captured Image">`;
+			$("#captured_image_data").val(data_uri);
+		});
+	}
+
+	function saveSnapshot() {
+		var base64data = $("#captured_image_data").val();
+		$.ajax({
+			type: "POST",
+			dataType: "json",
+			url: "capture_image_upload.php",
+			data: { image: base64data },
+			success: function (data) {
+				alert(data);
+			}
+		});
+	}
+</script>
+</body>
+
+</html>
