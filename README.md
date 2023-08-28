@@ -41,4 +41,4 @@ This project demonstrates how to capture a live photo using a webcam and upload 
 
 - [Webcam.js](https://github.com/jhuckaby/webcam)
 - [Bootstrap](https://getbootstrap.com/)
-- [ShinerWeb] (https://shinerweb.com/how-to-capture-image-from-webcam-in-javascript-and-php/)
+- [ShinerWeb](https://shinerweb.com/how-to-capture-image-from-webcam-in-javascript-and-php/)
